@@ -44,7 +44,11 @@ def scrape_candidate_details(url: str, species: str):
     candidate = Candidate()
 
     candidate.name = soup.select_one(".info-box .col-lg-4:nth-child(2)").text.strip()
-    candidate.id = soup.select_one(".info-box .col-lg-4:nth-child(3)").text.strip().split(".")[1]
+    # The ID number is not always unique, so that the candidate will be overwritten the duplicated one
+    # Quick Fix: Use the URL as an unique key
+    url_segments = url.split("/")
+    candidate.id = url_segments[-2]
+    candidate.id_number = soup.select_one(".info-box .col-lg-4:nth-child(3)").text.strip().split(".")[1]
     candidate.species = species
     candidate.url = url
     candidate.photo_url = soup.select_one(".img-fluid").get("src").strip()
@@ -69,6 +73,7 @@ def filter_new_candidate_urls(candidates_in_db, urls):
 @dataclass
 class Candidate:
     id: Optional[str] = field(default=None)
+    id_number: Optional[str] = field(default=None)
     species: Optional[str] = field(default=None)
     url: Optional[str] = field(default=None)
     photo_url: Optional[str] = field(default=None)

@@ -15,7 +15,7 @@ def send_notification(chat_id, inputCandidates):
 
 
 def send_photo(chat_id, candidate):
-    message = f"""編號:    {candidate["id"]}
+    message = f"""編號:    {candidate["id_number"]}
 名稱:    {candidate["name"]}
 品種:    {candidate["breed"]}
 性別:    {candidate["gender"]}
